@@ -1,6 +1,7 @@
 # StoryHelper Landing Page
 
 티스토리 블로그 생산성 향상 Chrome 확장프로그램의 공식 랜딩 페이지
+
 <img width="1590" height="1054" alt="스크린샷 2025-12-29 오후 3 13 37" src="https://github.com/user-attachments/assets/43ad3f1f-89d3-48e2-8531-4c94070e61e3" />
 
 ## 기술 스택

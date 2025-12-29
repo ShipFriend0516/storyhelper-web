@@ -1,5 +1,10 @@
+'use client';
+
+import { useExtensionVersion } from '@/hooks/useExtensionVersion';
+
 export default function Footer() {
   const currentYear = new Date().getFullYear();
+  const { version } = useExtensionVersion();
 
   return (
     <footer className="bg-gray-900 py-12">
@@ -74,7 +79,7 @@ export default function Footer() {
                 개발자: shipfriend.dev
               </li>
               <li className="text-sm text-gray-400">
-                버전 1.6.0
+                {version ? `버전 ${version}` : '버전 정보 로딩 중...'}
               </li>
             </ul>
           </div>

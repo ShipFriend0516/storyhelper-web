@@ -75,8 +75,15 @@ export default function Footer() {
                   sjw4371@naver.com
                 </a>
               </li>
-              <li className="text-sm text-gray-300">
-                개발자: shipfriend.dev
+              <li>
+                <a
+                  href="https://shipfriend.dev"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-sm text-gray-300 transition-colors hover:text-white"
+                >
+                  개발자: shipfriend.dev
+                </a>
               </li>
               <li className="text-sm text-gray-400">
                 {version ? `버전 ${version}` : '버전 정보 로딩 중...'}

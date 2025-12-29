@@ -8,17 +8,7 @@ import { CheckCircle, MessageCircle } from 'lucide-react';
 
 // Zod schema for form validation
 const feedbackSchema = z.object({
-  reason: z.enum(
-    [
-      'no-longer-needed',
-      'using-alternative',
-      'performance-issues',
-      'other'
-    ],
-    {
-      required_error: '삭제 이유를 선택해주세요',
-    }
-  ),
+  reason: z.enum(['no-longer-needed', 'using-alternative', 'performance-issues', 'other']),
   otherReason: z.string().optional(),
 }).refine((data) => {
   // If "other" is selected, otherReason must be provided

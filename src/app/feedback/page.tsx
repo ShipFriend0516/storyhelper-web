@@ -60,15 +60,28 @@ export default function FeedbackPage() {
   const onSubmit = async (data: FeedbackFormData) => {
     setIsSubmitting(true);
 
-    // TODO: Implement API endpoint to send feedback
-    // For now, just log to console
-    console.log('Feedback submitted:', data);
+    try {
+      const response = await fetch('/api/feedback', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
 
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+      const result = await response.json();
 
-    setIsSubmitting(false);
-    setIsSubmitted(true);
+      if (!response.ok) {
+        throw new Error(result.error || '피드백 전송에 실패했습니다');
+      }
+
+      setIsSubmitted(true);
+    } catch (error) {
+      console.error('Feedback submission error:', error);
+      alert(error instanceof Error ? error.message : '피드백 전송에 실패했습니다');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   if (isSubmitted) {

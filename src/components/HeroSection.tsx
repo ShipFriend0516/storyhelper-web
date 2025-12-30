@@ -2,6 +2,7 @@
 
 import { Star, Users, Zap, Lock, DollarSign, ArrowRight, ChevronDown } from 'lucide-react';
 import { useExtensionVersion } from '@/hooks/useExtensionVersion';
+import { useBrowser } from '@/hooks/useBrowser';
 
 const VersionSkeleton = () => (
   <span className="inline-block h-4 w-10 animate-pulse rounded bg-sage-300/50"></span>
@@ -9,6 +10,7 @@ const VersionSkeleton = () => (
 
 export default function HeroSection() {
   const { version, loading } = useExtensionVersion();
+  const browser = useBrowser();
 
   return (
     <section className="relative overflow-hidden bg-gradient-to-br from-sage-100 to-mint-100 py-20 md:py-32">
@@ -54,7 +56,7 @@ export default function HeroSection() {
               <svg className="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
               </svg>
-              Chrome에 추가하기
+              {browser}에 추가하기
               {loading ? (
                 <span className="inline-block h-3 w-8 animate-pulse rounded bg-white/30"></span>
               ) : (

@@ -42,7 +42,7 @@ const reasonOptions = [
   },
   {
     value: "dont-know-how-to-use" as const,
-    label: "사용 방법을 잘 모르겠습니다.",
+    label: "사용 방법을 잘 모르겠습니다",
   },
   {
     value: "using-alternative" as const,

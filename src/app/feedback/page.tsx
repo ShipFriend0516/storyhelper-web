@@ -14,6 +14,7 @@ const feedbackSchema = z
       "no-longer-needed",
       "using-alternative",
       "performance-issues",
+      "dont-know-how-to-use",
       "other",
     ]),
     otherReason: z.string().optional(),
@@ -38,6 +39,10 @@ const reasonOptions = [
   {
     value: "no-longer-needed" as const,
     label: "기능이 필요 없어졌습니다",
+  },
+  {
+    value: "dont-know-how-to-use" as const,
+    label: "사용 방법을 잘 모르겠습니다.",
   },
   {
     value: "using-alternative" as const,

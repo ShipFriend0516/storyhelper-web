@@ -4,7 +4,7 @@ import { useExtensionVersion } from '@/hooks/useExtensionVersion';
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
-  const { version } = useExtensionVersion();
+  const { version, loading } = useExtensionVersion();
 
   return (
     <footer className="bg-gray-900 py-12">
@@ -86,7 +86,13 @@ export default function Footer() {
                 </a>
               </li>
               <li className="text-sm text-gray-400">
-                {version ? `버전 ${version}` : '버전 정보 로딩 중...'}
+                {loading ? (
+                  <span className="flex items-center gap-1">
+                    버전 <span className="inline-block h-4 w-10 animate-pulse rounded bg-gray-700"></span>
+                  </span>
+                ) : (
+                  version && `버전 ${version}`
+                )}
               </li>
             </ul>
           </div>

@@ -3,8 +3,12 @@
 import { Star, Users, Zap, Lock, DollarSign, ArrowRight, ChevronDown } from 'lucide-react';
 import { useExtensionVersion } from '@/hooks/useExtensionVersion';
 
+const VersionSkeleton = () => (
+  <span className="inline-block h-4 w-10 animate-pulse rounded bg-sage-300/50"></span>
+);
+
 export default function HeroSection() {
-  const { version } = useExtensionVersion();
+  const { version, loading } = useExtensionVersion();
 
   return (
     <section className="relative overflow-hidden bg-gradient-to-br from-sage-100 to-mint-100 py-20 md:py-32">
@@ -14,8 +18,8 @@ export default function HeroSection() {
           <div className="mb-8 inline-flex items-center gap-2 rounded-full bg-sage-100 px-4 py-2 text-sm font-medium text-sage-700">
             <span className="flex h-2 w-2 rounded-full bg-forest-500"></span>
             <span className="flex items-center gap-2">
-              {version && <span className="text-xs opacity-75">v{version}</span>}
-              {version && <span className="text-gray-400">|</span>}
+              {loading ? <VersionSkeleton /> : version && <span className="text-xs opacity-75">v{version}</span>}
+              {(loading || version) && <span className="text-gray-400">|</span>}
               <Users className="h-4 w-4" />
               200+ 활성 사용자 |
               <Star className="h-4 w-4 fill-amber-400 text-amber-400" />
@@ -51,7 +55,11 @@ export default function HeroSection() {
                 <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
               </svg>
               Chrome에 추가하기
-              {version && <span className="text-xs opacity-75">v{version}</span>}
+              {loading ? (
+                <span className="inline-block h-3 w-8 animate-pulse rounded bg-white/30"></span>
+              ) : (
+                version && <span className="text-xs opacity-75">v{version}</span>
+              )}
               <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
             </a>
             <a

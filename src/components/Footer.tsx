@@ -52,6 +52,14 @@ export default function Footer() {
               </li>
               <li>
                 <a
+                  href="/privacy"
+                  className="text-sm text-gray-300 transition-colors hover:text-white"
+                >
+                  개인정보처리방침
+                </a>
+              </li>
+              <li>
+                <a
                   href="mailto:sjw4371@naver.com"
                   className="text-sm text-gray-300 transition-colors hover:text-white"
                 >

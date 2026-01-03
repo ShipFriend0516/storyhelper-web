@@ -52,6 +52,14 @@ export default function Footer() {
               </li>
               <li>
                 <a
+                  href="/patch-notes"
+                  className="text-sm text-gray-300 transition-colors hover:text-white"
+                >
+                  패치노트
+                </a>
+              </li>
+              <li>
+                <a
                   href="/privacy"
                   className="text-sm text-gray-300 transition-colors hover:text-white"
                 >

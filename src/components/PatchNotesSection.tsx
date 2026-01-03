@@ -1,24 +1,7 @@
 "use client";
 
 import { Calendar, ExternalLink } from "lucide-react";
-
-interface PatchNote {
-  version: string;
-  date: string;
-  title: string;
-  blogUrl: string;
-}
-
-const patchNotes: PatchNote[] = [
-  {
-    version: "1.6.2",
-    date: "2026-01-03",
-    title: "접근성 강화 및 UI/UX 개선",
-    blogUrl:
-      "https://shipfriend.dev/posts/storyhelper-v1-6-2-%ED%8C%A8%EC%B9%98%EB%85%B8%ED%8A%B8",
-  },
-  // 추가 패치노트를 여기에 작성하세요
-];
+import { patchNotes } from "@/constants/patchNotes";
 
 export default function PatchNotesSection() {
   return (

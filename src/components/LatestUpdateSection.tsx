@@ -12,7 +12,7 @@ export default function LatestUpdateSection() {
     return null;
   }
   return (
-    <section className="bg-white py-20 md:py-24">
+    <section className="bg-gray-50 py-20 md:py-24">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto max-w-3xl">
           {/* Header */}

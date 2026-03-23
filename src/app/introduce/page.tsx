@@ -3,33 +3,30 @@
 import { useState, useEffect, useRef } from "react";
 import confetti from "canvas-confetti";
 import { ChevronLeft, ChevronRight, ExternalLink, BookOpen } from "lucide-react";
+import Image from "next/image";
 
 const steps = [
   {
     title: "확장프로그램 아이콘 클릭",
-    description:
-      "크롬 우측 상단의 확장프로그램 목록에서 Storyhelper 아이콘을 클릭하세요.",
+    description: "크롬 우측 상단의 확장프로그램 목록에서 Storyhelper 아이콘을 클릭하세요.",
     tip: "퍼즐 조각 아이콘을 눌러 확장프로그램 목록을 열 수 있어요.",
     imageSrc: "/guide/step-1.png",
   },
   {
     title: "원하는 기능 토글하기",
-    description:
-      "팝업에서 사용하고 싶은 기능의 토글을 켜세요. 필요 없는 기능은 꺼둘 수 있어요.",
+    description: "팝업에서 사용하고 싶은 기능의 토글을 켜세요. 필요 없는 기능은 꺼둘 수 있어요.",
     tip: "각 기능은 독립적으로 켜고 끌 수 있어요.",
     imageSrc: "/guide/step-2.png",
   },
   {
     title: "페이지 새로고침",
-    description:
-      "티스토리 글쓰기 페이지를 새로고침(F5)해야 변경사항이 적용됩니다.",
+    description: "티스토리 글쓰기 페이지를 새로고침(F5)해야 변경사항이 적용됩니다.",
     tip: "기능을 바꿀 때마다 새로고침이 필요해요.",
     imageSrc: "/guide/step-3.png",
   },
   {
     title: "이미지 도구바 추가됨",
-    description:
-      "이미지 관련 기능이 티스토리 에디터 상단 도구바에 자연스럽게 추가됩니다.",
+    description: "이미지 관련 기능이 티스토리 에디터 상단 도구바에 자연스럽게 추가됩니다.",
     tip: "이미지를 선택하면 추가 도구 버튼이 나타나요.",
     imageSrc: "/guide/step-4.png",
   },
@@ -38,7 +35,10 @@ const steps = [
     description:
       "SEO 검증 기능은 화면 우측 하단에 나타납니다. 글을 작성하면서 실시간으로 확인할 수 있어요.",
     tip: "SEO 점수가 실시간으로 업데이트돼요.",
-    imageSrc: "/guide/step-5.png",
+    variants: [
+      { label: "성공", imageSrc: "/guide/step-5-success.png" },
+      { label: "실패", imageSrc: "/guide/step-5-fail.png" },
+    ],
   },
   {
     title: "텍스트 카운터",
@@ -58,6 +58,7 @@ const steps = [
 
 export default function IntroducePage() {
   const [currentStep, setCurrentStep] = useState(0);
+  const [selectedVariant, setSelectedVariant] = useState(0);
   const [imgError, setImgError] = useState(false);
   const [imgLoading, setImgLoading] = useState(true);
   const confettiFired = useRef(false);
@@ -74,6 +75,7 @@ export default function IntroducePage() {
   useEffect(() => {
     setImgError(false);
     setImgLoading(true);
+    setSelectedVariant(0);
 
     if (isLastStep && !confettiFired.current) {
       confettiFired.current = true;
@@ -131,7 +133,8 @@ export default function IntroducePage() {
               boxShadow: "0 0 0 9999px rgba(0, 0, 0, 0.72)",
               left: `${spotlightPos.x - 110}px`,
               top: `${spotlightPos.y - 110}px`,
-              transition: "left 1.1s cubic-bezier(0.4, 0, 0.2, 1), top 1.1s cubic-bezier(0.4, 0, 0.2, 1)",
+              transition:
+                "left 1.1s cubic-bezier(0.4, 0, 0.2, 1), top 1.1s cubic-bezier(0.4, 0, 0.2, 1)",
             }}
           />
         </div>
@@ -141,9 +144,7 @@ export default function IntroducePage() {
         <div className="mx-auto flex max-w-5xl items-center justify-between">
           <div className="flex items-center gap-2">
             <BookOpen className="h-5 w-5 text-sage-600" />
-            <span className="font-semibold text-gray-800">
-              Storyhelper 시작 가이드
-            </span>
+            <span className="font-semibold text-gray-800">Storyhelper 시작 가이드</span>
           </div>
           <span className="text-sm text-gray-400">
             {currentStep + 1} / {totalSteps}
@@ -160,32 +161,67 @@ export default function IntroducePage() {
       </div>
 
       {/* Main content */}
-      <div className="mx-auto max-w-5xl px-6 py-12 md:py-16">
+      <div className="mx-auto max-w-6xl px-6 py-12 md:py-16">
         <div className="grid grid-cols-1 gap-10 md:grid-cols-2 md:items-center md:gap-16">
           {/* Image */}
-          <div className="relative flex h-72 items-center justify-center overflow-hidden rounded-2xl bg-white p-6 shadow-sm">
-            {/* Skeleton */}
-            {imgLoading && !imgError && (
-              <div className="absolute inset-0 animate-pulse">
-                <div className="h-full w-full rounded-2xl bg-gray-100" />
+          <div className="flex flex-col gap-0">
+            {"variants" in step && step.variants && (
+              <div className="flex rounded-t-2xl overflow-hidden border border-b-0 border-gray-200">
+                {step.variants.map((v, i) => (
+                  <button
+                    key={i}
+                    onClick={() => {
+                      setSelectedVariant(i);
+                      setImgError(false);
+                      setImgLoading(true);
+                    }}
+                    className={`flex-1 cursor-pointer py-2 text-sm font-semibold transition-colors ${
+                      i === selectedVariant
+                        ? i === 0
+                          ? "bg-sage-500 text-white"
+                          : "bg-red-400 text-white"
+                        : "bg-white text-gray-400 hover:text-gray-600"
+                    }`}
+                  >
+                    {v.label}
+                  </button>
+                ))}
               </div>
             )}
+            <div
+              className={`relative flex h-80 items-center justify-center overflow-hidden bg-white p-6 shadow-sm ${"variants" in step && step.variants ? "rounded-b-2xl border border-gray-200" : "rounded-2xl"}`}
+            >
+              {/* Skeleton */}
+              {imgLoading && !imgError && (
+                <div className="absolute inset-0 animate-pulse">
+                  <div className="h-full w-full bg-gray-100" />
+                </div>
+              )}
 
-            {imgError ? (
-              <div className="flex flex-col items-center gap-3 text-gray-300">
-                <div className="h-16 w-16 rounded-full bg-gray-100" />
-                <span className="text-sm">스크린샷 준비 중</span>
-              </div>
-            ) : (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
-                src={step.imageSrc}
-                alt={step.title}
-                onLoad={() => setImgLoading(false)}
-                onError={() => { setImgLoading(false); setImgError(true); }}
-                className={`max-h-full w-full object-contain transition-opacity duration-300 ${imgLoading ? "opacity-0" : "opacity-100"}`}
-              />
-            )}
+              {imgError ? (
+                <div className="flex flex-col items-center gap-3 text-gray-300">
+                  <div className="h-16 w-16 rounded-full bg-gray-100" />
+                  <span className="text-sm">스크린샷 준비 중</span>
+                </div>
+              ) : (
+                <Image
+                  src={
+                    "variants" in step && step.variants
+                      ? step.variants[selectedVariant].imageSrc
+                      : (step as { imageSrc: string }).imageSrc
+                  }
+                  alt={step.title}
+                  width={1280}
+                  height={720}
+                  onLoad={() => setImgLoading(false)}
+                  onError={() => {
+                    setImgLoading(false);
+                    setImgError(true);
+                  }}
+                  className={`max-h-full w-full object-contain transition-opacity duration-300 ${imgLoading ? "opacity-0" : "opacity-100"}`}
+                />
+              )}
+            </div>
           </div>
 
           {/* Text content */}
@@ -193,12 +229,10 @@ export default function IntroducePage() {
             <div className="mb-4 inline-flex items-center rounded-full bg-sage-100 px-3 py-1 text-sm font-semibold text-sage-700">
               Step {String(currentStep + 1).padStart(2, "0")}
             </div>
-            <h2 className="mb-4 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+            <h2 className="mb-4 text-4xl font-bold tracking-tight text-gray-900 sm:text-4xl">
               {step.title}
             </h2>
-            <p className="mb-6 text-lg leading-relaxed text-gray-600">
-              {step.description}
-            </p>
+            <p className="mb-6 text-lg leading-relaxed text-gray-600">{step.description}</p>
             {step.tip && (
               <div className="rounded-xl bg-white px-5 py-4 text-sm text-sage-700 shadow-sm">
                 <span className="font-semibold">TIP.</span> {step.tip}
@@ -217,9 +251,7 @@ export default function IntroducePage() {
                 onClick={() => setCurrentStep(i)}
                 aria-label={`${i + 1}번 슬라이드로 이동`}
                 className={`h-2 cursor-pointer rounded-full transition-all ${
-                  i === currentStep
-                    ? "w-6 bg-sage-500"
-                    : "w-2 bg-gray-300 hover:bg-gray-400"
+                  i === currentStep ? "w-6 bg-sage-500" : "w-2 bg-gray-300 hover:bg-gray-400"
                 }`}
               />
             ))}
@@ -262,12 +294,8 @@ export default function IntroducePage() {
         {/* Final CTA */}
         {isLastStep && (
           <div className="mt-8 text-center">
-            <p className="text-xl font-semibold text-gray-800">
-              그럼 이제 글을 작성하러 가볼까요?
-            </p>
-            <p className="mt-2 text-sm text-gray-500">
-              궁금한 점이 있으면 언제든지 문의주세요.
-            </p>
+            <p className="text-xl font-semibold text-gray-800">그럼 이제 글을 작성하러 가볼까요?</p>
+            <p className="mt-2 text-sm text-gray-500">궁금한 점이 있으면 언제든지 문의주세요.</p>
           </div>
         )}
       </div>

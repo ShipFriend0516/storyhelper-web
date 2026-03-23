@@ -162,6 +162,19 @@ export default function IntroducePage() {
 
       {/* Main content */}
       <div className="mx-auto max-w-6xl px-6 py-12 md:py-16">
+        {/* Thank you banner */}
+        <div className="mb-10 rounded-2xl bg-white px-6 py-5 shadow-sm flex items-center gap-4">
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-sage-100 text-xl">
+            🎉
+          </div>
+          <div>
+            <p className="text-xl font-semibold text-gray-800">
+              Storyhelper를 설치해 주셔서 감사합니다!
+            </p>
+            <p className="mt-0.5 text-sm text-gray-500">아래 가이드를 따라 바로 시작해 보세요.</p>
+          </div>
+        </div>
+
         <div className="grid grid-cols-1 gap-10 md:grid-cols-2 md:items-center md:gap-16">
           {/* Image */}
           <div className="flex flex-col gap-0">
@@ -243,18 +256,25 @@ export default function IntroducePage() {
 
         {/* Navigation */}
         <div className="mt-12 flex items-center justify-between border-t border-sage-100 pt-8">
-          {/* Dot indicators */}
-          <div className="flex items-center gap-2">
-            {steps.map((_, i) => (
-              <button
-                key={i}
-                onClick={() => setCurrentStep(i)}
-                aria-label={`${i + 1}번 슬라이드로 이동`}
-                className={`h-2 cursor-pointer rounded-full transition-all ${
-                  i === currentStep ? "w-6 bg-sage-500" : "w-2 bg-gray-300 hover:bg-gray-400"
-                }`}
-              />
-            ))}
+          {/* Dot indicators + keyboard hint */}
+          <div className="flex flex-col gap-2">
+            <div className="flex items-center gap-2">
+              {steps.map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => setCurrentStep(i)}
+                  aria-label={`${i + 1}번 슬라이드로 이동`}
+                  className={`h-2 cursor-pointer rounded-full transition-all ${
+                    i === currentStep ? "w-6 bg-sage-500" : "w-2 bg-gray-300 hover:bg-gray-400"
+                  }`}
+                />
+              ))}
+            </div>
+            <p className="text-xs text-gray-400">
+              <kbd className="rounded border border-gray-200 bg-gray-50 px-1 py-0.5 font-mono text-xs">←</kbd>
+              {" "}<kbd className="rounded border border-gray-200 bg-gray-50 px-1 py-0.5 font-mono text-xs">→</kbd>
+              {" "}키보드로도 넘길 수 있어요
+            </p>
           </div>
 
           {/* Buttons */}

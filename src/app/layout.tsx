@@ -3,13 +3,25 @@ import "./globals.css";
 import StructuredData from "@/components/StructuredData";
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://storyhelper.shipfriend.dev'),
+  metadataBase: new URL("https://storyhelper.shipfriend.dev"),
   title: {
     default: "StoryHelper - 최고의 티스토리 생산성 확장프로그램",
-    template: "%s | StoryHelper"
+    template: "%s | StoryHelper",
   },
-  description: "SEO 최적화부터 글자 수 카운팅까지, StoryHelper로 티스토리 블로그 생산성을 10배 향상시키세요. 200+ 활성 사용자, 5.0/5.0 평점의 무료 Chrome 확장프로그램",
-  keywords: ["티스토리", "확장프로그램", "SEO", "블로그", "생산성", "티스토리 도구", "글자수 세기", "이미지 최적화", "Chrome 확장", "블로그 도구"],
+  description:
+    "SEO 최적화부터 글자 수 카운팅까지, StoryHelper로 티스토리 블로그 생산성을 10배 향상시키세요. 200+ 활성 사용자, 5.0/5.0 평점의 무료 Chrome 확장프로그램",
+  keywords: [
+    "티스토리",
+    "확장프로그램",
+    "SEO",
+    "블로그",
+    "생산성",
+    "티스토리 도구",
+    "글자수 세기",
+    "이미지 최적화",
+    "Chrome 확장",
+    "블로그 도구",
+  ],
   authors: [{ name: "shipfriend.dev", url: "https://shipfriend.dev" }],
   creator: "shipfriend.dev",
   publisher: "shipfriend.dev",
@@ -21,7 +33,8 @@ export const metadata: Metadata = {
     url: "https://storyhelper.shipfriend.dev",
     siteName: "StoryHelper",
     title: "StoryHelper - 최고의 티스토리 생산성 확장프로그램",
-    description: "SEO 최적화부터 글자 수 카운팅까지, 티스토리 블로그 생산성을 10배 향상시키세요. 200+ 활성 사용자, 5.0/5.0 평점",
+    description:
+      "SEO 최적화부터 글자 수 카운팅까지, 티스토리 블로그 생산성을 10배 향상시키세요. 200+ 활성 사용자, 5.0/5.0 평점",
     images: [
       {
         url: "/opengraph-image.png",
@@ -44,9 +57,9 @@ export const metadata: Metadata = {
     googleBot: {
       index: true,
       follow: true,
-      'max-video-preview': -1,
-      'max-image-preview': 'large',
-      'max-snippet': -1,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
     },
   },
   verification: {
@@ -67,7 +80,7 @@ export default function RootLayout({
       <head>
         <StructuredData />
       </head>
-      <body className="antialiased">
+      <body className="antialiased" ez-attribute="body">
         {children}
       </body>
     </html>

@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
+import confetti from "canvas-confetti";
 import { ChevronLeft, ChevronRight, ExternalLink, BookOpen } from "lucide-react";
 
 const steps = [
@@ -59,6 +60,7 @@ export default function IntroducePage() {
   const [currentStep, setCurrentStep] = useState(0);
   const [imgError, setImgError] = useState(false);
   const [imgLoading, setImgLoading] = useState(true);
+  const confettiFired = useRef(false);
 
   const totalSteps = steps.length;
   const isLastStep = currentStep === totalSteps - 1;
@@ -68,7 +70,17 @@ export default function IntroducePage() {
   useEffect(() => {
     setImgError(false);
     setImgLoading(true);
-  }, [currentStep]);
+
+    if (isLastStep && !confettiFired.current) {
+      confettiFired.current = true;
+      confetti({
+        particleCount: 120,
+        spread: 80,
+        origin: { y: 0.6 },
+        colors: ["#6ba896", "#4a7c6f", "#a8c5bc", "#8fb8ae", "#2d6a5f"],
+      });
+    }
+  }, [currentStep, isLastStep]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {

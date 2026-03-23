@@ -1,15 +1,11 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
-type BrowserType =
-  | "Chrome"
-  | "Arc"
-  | "Edge"
-  | "Brave"
-  | "Opera"
-  | "Whale"
-  | "Vivaldi";
+type BrowserType = "Chrome" | "Arc" | "Edge" | "Brave" | "Opera" | "Whale" | "Vivaldi";
 
 function detectBrowser(): BrowserType {
+  if (typeof navigator === "undefined") {
+    return "Chrome";
+  }
   const ua = navigator.userAgent;
 
   if (ua.includes("Arc")) {
@@ -22,10 +18,7 @@ function detectBrowser(): BrowserType {
     return "Whale";
   } else if (ua.includes("Vivaldi")) {
     return "Vivaldi";
-  } else if (
-    (navigator as { brave?: { isBrave?: () => Promise<boolean> } }).brave
-      ?.isBrave
-  ) {
+  } else if ((navigator as { brave?: { isBrave?: () => Promise<boolean> } }).brave?.isBrave) {
     return "Brave";
   } else if (ua.includes("Chrome")) {
     return "Chrome";

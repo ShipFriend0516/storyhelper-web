@@ -61,6 +61,10 @@ export default function IntroducePage() {
   const [imgError, setImgError] = useState(false);
   const [imgLoading, setImgLoading] = useState(true);
   const confettiFired = useRef(false);
+  const buttonRef = useRef<HTMLAnchorElement>(null);
+  const [spotlightVisible, setSpotlightVisible] = useState(false);
+  const [spotlightOpacity, setSpotlightOpacity] = useState(0);
+  const [spotlightPos, setSpotlightPos] = useState({ x: 0, y: 0 });
 
   const totalSteps = steps.length;
   const isLastStep = currentStep === totalSteps - 1;
@@ -79,6 +83,25 @@ export default function IntroducePage() {
         origin: { y: 0.6 },
         colors: ["#6ba896", "#4a7c6f", "#a8c5bc", "#8fb8ae", "#2d6a5f"],
       });
+
+      // 1) 화면 중앙에 스포트라이트 등장
+      setTimeout(() => {
+        setSpotlightPos({ x: window.innerWidth / 2, y: window.innerHeight / 2 });
+        setSpotlightVisible(true);
+        setSpotlightOpacity(1);
+
+        // 2) 버튼 위치로 이동
+        setTimeout(() => {
+          if (buttonRef.current) {
+            const rect = buttonRef.current.getBoundingClientRect();
+            setSpotlightPos({ x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 });
+          }
+        }, 150);
+
+        // 3) 페이드아웃
+        setTimeout(() => setSpotlightOpacity(0), 2800);
+        setTimeout(() => setSpotlightVisible(false), 3400);
+      }, 900);
     }
   }, [currentStep, isLastStep]);
 
@@ -93,6 +116,26 @@ export default function IntroducePage() {
 
   return (
     <main className="min-h-screen bg-linear-to-br from-sage-50 to-mint-50">
+      {/* Spotlight overlay */}
+      {spotlightVisible && (
+        <div
+          className="fixed inset-0 z-50 pointer-events-none"
+          style={{ opacity: spotlightOpacity, transition: "opacity 0.6s ease" }}
+        >
+          <div
+            style={{
+              position: "absolute",
+              width: "220px",
+              height: "220px",
+              borderRadius: "50%",
+              boxShadow: "0 0 0 9999px rgba(0, 0, 0, 0.72)",
+              left: `${spotlightPos.x - 110}px`,
+              top: `${spotlightPos.y - 110}px`,
+              transition: "left 1.1s cubic-bezier(0.4, 0, 0.2, 1), top 1.1s cubic-bezier(0.4, 0, 0.2, 1)",
+            }}
+          />
+        </div>
+      )}
       {/* Top header */}
       <div className="border-b border-sage-100 bg-white/70 px-6 py-4 backdrop-blur-sm">
         <div className="mx-auto flex max-w-5xl items-center justify-between">
@@ -195,10 +238,11 @@ export default function IntroducePage() {
 
             {isLastStep ? (
               <a
+                ref={buttonRef}
                 href="https://www.tistory.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex cursor-pointer items-center gap-2 rounded-lg bg-linear-to-r from-sage-500 to-forest-600 px-5 py-2.5 font-semibold text-white transition-all hover:scale-105 hover:shadow-lg"
+                className="relative z-51 flex cursor-pointer items-center gap-2 rounded-lg bg-linear-to-r from-sage-500 to-forest-600 px-5 py-2.5 font-semibold text-white transition-all hover:scale-105 hover:shadow-lg"
               >
                 티스토리 바로가기
                 <ExternalLink className="h-4 w-4" />

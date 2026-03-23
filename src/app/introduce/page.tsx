@@ -58,6 +58,7 @@ const steps = [
 export default function IntroducePage() {
   const [currentStep, setCurrentStep] = useState(0);
   const [imgError, setImgError] = useState(false);
+  const [imgLoading, setImgLoading] = useState(true);
 
   const totalSteps = steps.length;
   const isLastStep = currentStep === totalSteps - 1;
@@ -66,6 +67,7 @@ export default function IntroducePage() {
 
   useEffect(() => {
     setImgError(false);
+    setImgLoading(true);
   }, [currentStep]);
 
   useEffect(() => {
@@ -106,9 +108,16 @@ export default function IntroducePage() {
       <div className="mx-auto max-w-5xl px-6 py-12 md:py-16">
         <div className="grid grid-cols-1 gap-10 md:grid-cols-2 md:items-center md:gap-16">
           {/* Image */}
-          <div className="flex items-center justify-center rounded-2xl bg-white p-6 shadow-sm">
+          <div className="relative flex h-72 items-center justify-center overflow-hidden rounded-2xl bg-white p-6 shadow-sm">
+            {/* Skeleton */}
+            {imgLoading && !imgError && (
+              <div className="absolute inset-0 animate-pulse">
+                <div className="h-full w-full rounded-2xl bg-gray-100" />
+              </div>
+            )}
+
             {imgError ? (
-              <div className="flex h-64 w-full flex-col items-center justify-center gap-3 text-gray-300">
+              <div className="flex flex-col items-center gap-3 text-gray-300">
                 <div className="h-16 w-16 rounded-full bg-gray-100" />
                 <span className="text-sm">스크린샷 준비 중</span>
               </div>
@@ -117,8 +126,9 @@ export default function IntroducePage() {
               <img
                 src={step.imageSrc}
                 alt={step.title}
-                onError={() => setImgError(true)}
-                className="max-h-72 w-full object-contain"
+                onLoad={() => setImgLoading(false)}
+                onError={() => { setImgLoading(false); setImgError(true); }}
+                className={`max-h-full w-full object-contain transition-opacity duration-300 ${imgLoading ? "opacity-0" : "opacity-100"}`}
               />
             )}
           </div>
@@ -151,7 +161,7 @@ export default function IntroducePage() {
                 key={i}
                 onClick={() => setCurrentStep(i)}
                 aria-label={`${i + 1}번 슬라이드로 이동`}
-                className={`h-2 rounded-full transition-all ${
+                className={`h-2 cursor-pointer rounded-full transition-all ${
                   i === currentStep
                     ? "w-6 bg-sage-500"
                     : "w-2 bg-gray-300 hover:bg-gray-400"
@@ -165,7 +175,7 @@ export default function IntroducePage() {
             <button
               onClick={() => setCurrentStep((s) => s - 1)}
               disabled={isFirstStep}
-              className="flex items-center gap-2 rounded-lg border-2 border-gray-200 px-5 py-2.5 font-semibold text-gray-600 transition-all hover:border-gray-300 hover:bg-white disabled:cursor-not-allowed disabled:opacity-30"
+              className="flex cursor-pointer items-center gap-2 rounded-lg border-2 border-gray-200 px-5 py-2.5 font-semibold text-gray-600 transition-all hover:border-gray-300 hover:bg-white disabled:cursor-not-allowed disabled:opacity-30"
             >
               <ChevronLeft className="h-4 w-4" />
               이전
@@ -176,7 +186,7 @@ export default function IntroducePage() {
                 href="https://www.tistory.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-2 rounded-lg bg-linear-to-r from-sage-500 to-forest-600 px-5 py-2.5 font-semibold text-white transition-all hover:scale-105 hover:shadow-lg"
+                className="flex cursor-pointer items-center gap-2 rounded-lg bg-linear-to-r from-sage-500 to-forest-600 px-5 py-2.5 font-semibold text-white transition-all hover:scale-105 hover:shadow-lg"
               >
                 티스토리 바로가기
                 <ExternalLink className="h-4 w-4" />
@@ -184,7 +194,7 @@ export default function IntroducePage() {
             ) : (
               <button
                 onClick={() => setCurrentStep((s) => s + 1)}
-                className="flex items-center gap-2 rounded-lg bg-linear-to-r from-sage-500 to-forest-600 px-5 py-2.5 font-semibold text-white transition-all hover:scale-105 hover:shadow-lg"
+                className="flex cursor-pointer items-center gap-2 rounded-lg bg-linear-to-r from-sage-500 to-forest-600 px-5 py-2.5 font-semibold text-white transition-all hover:scale-105 hover:shadow-lg"
               >
                 다음
                 <ChevronRight className="h-4 w-4" />

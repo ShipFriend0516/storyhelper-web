@@ -7,11 +7,17 @@ export interface PatchNote {
 
 export const patchNotes: PatchNote[] = [
   {
+    version: "1.7.0",
+    date: "2026-03-28",
+    title: "실시간 미리보기 사이드뷰 패널 추가",
+    blogUrl:
+      "https://shipfriend.dev/posts/storyhelper-%ED%8C%A8%EC%B9%98-%EB%85%B8%ED%8A%B8-v1-7-0",
+  },
+  {
     version: "1.6.2",
     date: "2026-01-03",
     title: "접근성 강화 및 UI/UX 개선",
-    blogUrl:
-      "https://shipfriend.dev/posts/storyhelper-v1-6-2-%ED%8C%A8%EC%B9%98%EB%85%B8%ED%8A%B8",
+    blogUrl: "https://shipfriend.dev/posts/storyhelper-v1-6-2-%ED%8C%A8%EC%B9%98%EB%85%B8%ED%8A%B8",
   },
   {
     version: "1.6.0",

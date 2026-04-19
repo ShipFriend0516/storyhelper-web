@@ -4,3 +4,6 @@ Allow: /
 
 # Sitemaps
 Sitemap: https://storyhelper.shipfriend.dev/sitemap.xml
+
+# AI crawlers
+# llms.txt: https://storyhelper.shipfriend.dev/llms.txt

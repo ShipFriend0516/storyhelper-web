@@ -1,0 +1,28 @@
+# StoryHelper
+
+> StoryHelper는 티스토리 블로그 작성자를 위한 무료 Chrome 확장프로그램입니다. SEO 자동 검증, 실시간 글자 수 카운팅, 이미지 최적화, 단축키 기능을 제공합니다. 200명 이상의 활성 사용자, 평점 5.0/5.0.
+
+## 주요 기능
+
+- **SEO 검증기**: 글 작성 중 화면 우측 하단에서 SEO 점수를 실시간으로 확인
+- **텍스트 카운터**: 화면 우측 상단에서 글자 수를 실시간으로 표시
+- **이미지 도구바**: 티스토리 에디터 상단 도구바에 이미지 최적화 기능 추가
+- **단축키 지원**: 반복 작업을 단축키로 빠르게 처리
+- **미리보기 사이드뷰**: 편집과 동시에 글 미리보기를 동시에 볼 수 있는 기능
+- **인디케이터**: 화면 좌측 하단에서 기능을 빠르게 켜고 끌 수 있는 토글
+
+## 페이지
+
+- [홈](https://storyhelper.shipfriend.dev/): 서비스 소개, 기능 설명, 설치 안내
+- [패치 노트](https://storyhelper.shipfriend.dev/patch-notes): 버전별 업데이트 내역
+- [개인정보처리방침](https://storyhelper.shipfriend.dev/privacy): 개인정보 수집 및 이용 정책 (한국어/영어)
+- [개발자 홈페이지](https://shipfriend.dev): 개발자 ShipFriend TechBlog 정보
+
+## 제품 정보
+
+- **가격**: 무료
+- **플랫폼**: Chrome 브라우저 (Desktop)
+- **지원 사이트**: 티스토리(Tistory) 블로그 에디터
+- **개발사**: shipfriend.dev
+- **Chrome Web Store**: https://chromewebstore.google.com/detail/storyhelper-최고의-티스토리-생산성/inmbdknioncgblpeiiohmdihhidnjpfp
+- **개인정보**: 개인정보를 수집하지 않습니다

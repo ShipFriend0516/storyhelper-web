@@ -8,30 +8,19 @@ import { CheckCircle, MessageCircle, Lock } from "lucide-react";
 import Link from "next/link";
 
 // Zod schema for form validation
-const feedbackSchema = z
-  .object({
-    reason: z.enum([
+const feedbackSchema = z.object({
+  reason: z.enum(
+    [
       "no-longer-needed",
       "using-alternative",
       "performance-issues",
       "dont-know-how-to-use",
       "other",
-    ]),
-    otherReason: z.string().optional(),
-  })
-  .refine(
-    (data) => {
-      // If "other" is selected, otherReason must be provided
-      if (data.reason === "other") {
-        return data.otherReason && data.otherReason.trim().length > 0;
-      }
-      return true;
-    },
-    {
-      message: "기타 사유를 입력해주세요",
-      path: ["otherReason"],
-    }
-  );
+    ],
+    { message: "삭제 이유를 선택해주세요" }
+  ),
+  detail: z.string().max(1000, "1000자 이내로 입력해주세요").optional(),
+});
 
 type FeedbackFormData = z.infer<typeof feedbackSchema>;
 
@@ -39,22 +28,27 @@ const reasonOptions = [
   {
     value: "no-longer-needed" as const,
     label: "기능이 필요 없어졌습니다",
+    placeholder: "어떤 기능을 기대하셨나요?",
   },
   {
     value: "dont-know-how-to-use" as const,
     label: "사용 방법을 잘 모르겠습니다",
+    placeholder: "어디서 막히셨나요?",
   },
   {
     value: "using-alternative" as const,
     label: "다른 확장프로그램을 사용합니다",
+    placeholder: "어떤 확장프로그램인가요?",
   },
   {
     value: "performance-issues" as const,
     label: "성능/버그 문제",
+    placeholder: "어떤 문제가 있었나요?",
   },
   {
     value: "other" as const,
     label: "기타",
+    placeholder: "의견을 입력해주세요...",
   },
 ];
 
@@ -73,8 +67,21 @@ export default function FeedbackPage() {
 
   const selectedReason = watch("reason");
 
+  const selectedOption = reasonOptions.find(
+    (option) => option.value === selectedReason
+  );
+
   const onSubmit = async (data: FeedbackFormData) => {
     setIsSubmitting(true);
+
+    // Extension metadata passed via the uninstall URL (validated server-side)
+    const params = new URLSearchParams(window.location.search);
+    const days = params.get("days");
+    const meta = {
+      v: params.get("v") ?? undefined,
+      days: days !== null && days !== "" ? Number(days) : undefined,
+      lang: params.get("lang") ?? undefined,
+    };
 
     try {
       const response = await fetch("/api/feedback", {
@@ -82,7 +89,7 @@ export default function FeedbackPage() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify({ ...data, ...meta }),
       });
 
       const result = await response.json();
@@ -189,24 +196,26 @@ export default function FeedbackPage() {
             )}
           </div>
 
-          {selectedReason === "other" && (
+          {selectedOption && (
             <div className="mb-6">
               <label
-                htmlFor="otherReason"
+                htmlFor="detail"
                 className="mb-2 block text-sm font-semibold text-gray-700"
               >
-                자세한 내용을 알려주세요
+                자세한 내용을 알려주세요{" "}
+                <span className="font-normal text-gray-400">(선택)</span>
               </label>
               <textarea
-                id="otherReason"
-                {...register("otherReason")}
+                id="detail"
+                {...register("detail")}
                 rows={4}
+                maxLength={1000}
                 className="w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-gray-900 transition-all focus:border-sage-500 focus:outline-none focus:ring-2 focus:ring-sage-200"
-                placeholder="의견을 입력해주세요..."
+                placeholder={selectedOption.placeholder}
               />
-              {errors.otherReason && (
+              {errors.detail && (
                 <p className="mt-2 text-sm text-rose-600">
-                  {errors.otherReason.message}
+                  {errors.detail.message}
                 </p>
               )}
             </div>

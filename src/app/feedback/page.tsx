@@ -4,53 +4,60 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useState } from "react";
-import { CheckCircle, MessageCircle, Lock } from "lucide-react";
+import { CheckCircle, Heart, MessageCircle, Lock } from "lucide-react";
 import Link from "next/link";
+
+// Reason keys are stored in Notion as categories — never rename existing keys
+const reasonOptions = [
+  {
+    value: "not-blogging",
+    label: "블로그를 더 이상 하지 않습니다",
+    placeholder: null,
+  },
+  {
+    value: "no-longer-needed",
+    label: "기대한 기능이 없었습니다",
+    placeholder: "어떤 기능을 기대하셨나요?",
+  },
+  {
+    value: "dont-know-how-to-use",
+    label: "사용 방법을 잘 모르겠습니다",
+    placeholder: "어디서 막히셨나요?",
+  },
+  {
+    value: "nothing-appeared",
+    label: "에디터에 아무것도 나타나지 않았습니다",
+    placeholder: "어떤 화면에서 사용하셨나요? (새 에디터, 구 에디터 등)",
+  },
+  {
+    value: "performance-issues",
+    label: "성능/버그 문제",
+    placeholder: "어떤 문제가 있었나요?",
+  },
+  {
+    value: "using-alternative",
+    label: "다른 확장프로그램을 사용합니다",
+    placeholder: "어떤 확장프로그램인가요?",
+  },
+  {
+    value: "other",
+    label: "기타",
+    placeholder: "의견을 입력해주세요...",
+  },
+] as const;
+
+type ReasonKey = (typeof reasonOptions)[number]["value"];
 
 // Zod schema for form validation
 const feedbackSchema = z.object({
   reason: z.enum(
-    [
-      "no-longer-needed",
-      "using-alternative",
-      "performance-issues",
-      "dont-know-how-to-use",
-      "other",
-    ],
+    reasonOptions.map((option) => option.value) as [ReasonKey, ...ReasonKey[]],
     { message: "삭제 이유를 선택해주세요" }
   ),
   detail: z.string().max(1000, "1000자 이내로 입력해주세요").optional(),
 });
 
 type FeedbackFormData = z.infer<typeof feedbackSchema>;
-
-const reasonOptions = [
-  {
-    value: "no-longer-needed" as const,
-    label: "기능이 필요 없어졌습니다",
-    placeholder: "어떤 기능을 기대하셨나요?",
-  },
-  {
-    value: "dont-know-how-to-use" as const,
-    label: "사용 방법을 잘 모르겠습니다",
-    placeholder: "어디서 막히셨나요?",
-  },
-  {
-    value: "using-alternative" as const,
-    label: "다른 확장프로그램을 사용합니다",
-    placeholder: "어떤 확장프로그램인가요?",
-  },
-  {
-    value: "performance-issues" as const,
-    label: "성능/버그 문제",
-    placeholder: "어떤 문제가 있었나요?",
-  },
-  {
-    value: "other" as const,
-    label: "기타",
-    placeholder: "의견을 입력해주세요...",
-  },
-];
 
 export default function FeedbackPage() {
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -89,7 +96,12 @@ export default function FeedbackPage() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ ...data, ...meta }),
+        body: JSON.stringify({
+          reason: data.reason,
+          // Options without an input field never send details
+          detail: selectedOption?.placeholder ? data.detail : undefined,
+          ...meta,
+        }),
       });
 
       const result = await response.json();
@@ -196,7 +208,7 @@ export default function FeedbackPage() {
             )}
           </div>
 
-          {selectedOption && (
+          {selectedOption?.placeholder && (
             <div className="mb-6">
               <label
                 htmlFor="detail"
@@ -218,6 +230,20 @@ export default function FeedbackPage() {
                   {errors.detail.message}
                 </p>
               )}
+            </div>
+          )}
+
+          {selectedOption && !selectedOption.placeholder && (
+            <div className="mb-6 rounded-lg border border-sage-200 bg-gradient-to-br from-sage-50 to-mint-50 px-5 py-4">
+              <p className="flex items-start gap-2 text-sm text-gray-700">
+                <Heart className="mt-0.5 h-4 w-4 flex-shrink-0 text-sage-600" />
+                <span>
+                  그동안 StoryHelper와 함께해주셔서 감사합니다.
+                  <br />
+                  블로그를 다시 시작하시게 되면 StoryHelper도 꼭 다시
+                  찾아주세요!
+                </span>
+              </p>
             </div>
           )}
 

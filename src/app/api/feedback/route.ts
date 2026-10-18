@@ -5,11 +5,14 @@ const notion = new Client({
   auth: process.env.NOTION_API_KEY,
 });
 
+// Keys are stored as Notion categories — never rename existing keys
 const reasonLabels: Record<string, string> = {
-  'no-longer-needed': '기능이 필요 없어졌습니다',
+  'not-blogging': '블로그를 더 이상 하지 않습니다',
+  'no-longer-needed': '기대한 기능이 없었습니다',
   'dont-know-how-to-use': '사용 방법을 잘 모르겠습니다',
-  'using-alternative': '다른 확장프로그램을 사용합니다',
+  'nothing-appeared': '에디터에 아무것도 나타나지 않았습니다',
   'performance-issues': '성능/버그 문제',
+  'using-alternative': '다른 확장프로그램을 사용합니다',
   'other': '기타',
 };
 
@@ -40,7 +43,7 @@ export async function POST(request: Request) {
     const { reason, detail } = body;
 
     // Validate input
-    if (typeof reason !== 'string' || !(reason in reasonLabels)) {
+    if (typeof reason !== 'string' || !Object.hasOwn(reasonLabels, reason)) {
       return NextResponse.json(
         { error: '삭제 이유를 선택해주세요' },
         { status: 400 }
@@ -66,9 +69,9 @@ export async function POST(request: Request) {
       '삭제 이유': {
         title: [{ text: { content: reasonText } }],
       },
-      // Select property for reason category
+      // Select property for reason category (key, so label changes don't split stats)
       '카테고리': {
-        select: { name: reasonText },
+        select: { name: reason },
       },
       // Rich text for additional details
       ...(detailText
